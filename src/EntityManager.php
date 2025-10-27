@@ -3,6 +3,8 @@
 namespace Leopard\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Leopard\Events\EventManager;
+use Leopard\Doctrine\Events\InitEntityManagerEvent;
 use \Exception;
 
 /**
@@ -11,6 +13,11 @@ use \Exception;
  */
 class EntityManager
 {
+    /**
+     * @var bool $isInitialized
+     */
+    protected static bool $isInitialized = false;
+
     /**
      * @var EntityManagerInterface
      */
@@ -36,5 +43,9 @@ class EntityManager
     public static function setEntityManager(EntityManagerInterface $entityManager): void
     {
         self::$entityManager = $entityManager;
+        if (!self::$isInitialized) {
+            EventManager::doEvent(InitEntityManagerEvent::class);
+            self::$isInitialized = true;
+        }
     }
 }
