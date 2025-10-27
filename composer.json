@@ -3,7 +3,7 @@
     "description": "Lightweight PHP framework for working with databases using the Doctrine ORM.",
     "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
         {
             "name": "Максим Зінченко",
