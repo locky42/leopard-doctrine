@@ -2,4 +2,4 @@
 
 namespace Leopard\Doctrine\Events;
 
-class InitEntityManagerEvent {}
+class AfterInitEntityManagerEvent {}
