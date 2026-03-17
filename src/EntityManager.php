@@ -2,9 +2,9 @@
 
 namespace Leopard\Doctrine;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Leopard\Events\EventManager;
-use Leopard\Doctrine\Events\InitEntityManagerEvent;
+use Leopard\Doctrine\Events\AfterInitEntityManagerEvent;
+use Doctrine\ORM\EntityManagerInterface;
 use \Exception;
 
 /**
@@ -43,8 +43,12 @@ class EntityManager
     public static function setEntityManager(EntityManagerInterface $entityManager): void
     {
         self::$entityManager = $entityManager;
+
         if (!self::$isInitialized) {
-            EventManager::doEvent(InitEntityManagerEvent::class);
+            // Apply any ResolveTargetEntity mappings collected by packages
+            // before firing AfterInitEntityManagerEvent so Doctrine metadata
+            // resolution knows about interface -> implementation mappings.
+            EventManager::doEvent(AfterInitEntityManagerEvent::class);
             self::$isInitialized = true;
         }
     }
